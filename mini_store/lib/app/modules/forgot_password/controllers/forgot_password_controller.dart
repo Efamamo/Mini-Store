@@ -5,6 +5,7 @@ class ForgotPasswordController extends GetxController {
   //TODO: Implement ForgotPasswordController
   final count = 0.obs;
   final TextEditingController emailController = TextEditingController();
+  var submitClicked = false.obs;
 
   String? validateEmail(email) {
     if (email.length == 0) {

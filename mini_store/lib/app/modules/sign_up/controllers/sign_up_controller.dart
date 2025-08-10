@@ -8,6 +8,7 @@ class SignUpController extends GetxController {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
+  var submitClicked = false.obs;
 
   String? validateEmail(email) {
     if (email.length == 0) {

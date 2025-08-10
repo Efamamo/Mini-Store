@@ -9,7 +9,7 @@ class LandingPageView extends GetView<LandingPageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xffF9F7F1),
       body: Stack(
         children: [
           PageView(
@@ -19,9 +19,9 @@ class LandingPageView extends GetView<LandingPageController> {
             },
             children: const [
               Landing(
-                image: 'assets/images/store.jpeg',
+                image: 'assets/images/store.png',
                 pageIndex: 0,
-                title: "Start Little, Grow Big.",
+                title: "Start Little, Go Big.",
                 description:
                     "Discover new products and enjoy seamless shopping.",
               ),

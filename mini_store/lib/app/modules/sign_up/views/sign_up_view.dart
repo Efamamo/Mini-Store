@@ -17,6 +17,7 @@ class SignUpView extends GetView<SignUpController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffF9F7F1),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -56,65 +57,72 @@ class SignUpView extends GetView<SignUpController> {
                 top: 20,
                 bottom: 0,
               ),
-              child: Form(
-                key: _signUpformKey,
-                child: Column(
-                  children: [
-                    CustomTextField(
-                      icon: Icons.person,
-                      controller: controller.nameController,
-                      hintText: "Full Name",
-                      showSuffix: false,
-                      validator: controller.validateName,
-                    ),
-
-                    const SizedBox(height: 20),
-                    CustomTextField(
-                      icon: Icons.email,
-                      controller: controller.emailController,
-                      hintText: "Email",
-                      showSuffix: false,
-                      validator: controller.validateEmail,
-                    ),
-                    const SizedBox(height: 20),
-                    CustomTextField(
-                      controller: controller.passwordController,
-                      hintText: "Password",
-                      icon: Icons.lock,
-                      showSuffix: true,
-                      validator: controller.validatePassword,
-                    ),
-
-                    const SizedBox(height: 20),
-                    const SizedBox(height: 8),
-                    CustomTextField(
-                      icon: Icons.lock_outline,
-                      controller: controller.confirmPasswordController,
-                      hintText: "Confirm Password",
-                      showSuffix: true,
-                      validator: (value) {
-                        if (value != controller.passwordController.text) {
-                          return 'Passwords do not match';
-                        }
-                        return null;
-                      },
-                    ),
-
-                    const SizedBox(height: 30),
-                    AuthButton(
-                      widget: Text(
-                        "Sign up",
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                        ),
+              child: Obx(
+                () => Form(
+                  key: _signUpformKey,
+                  autovalidateMode:
+                      controller.submitClicked.value
+                          ? AutovalidateMode.onUserInteraction
+                          : AutovalidateMode.disabled,
+                  child: Column(
+                    children: [
+                      CustomTextField(
+                        icon: Icons.person,
+                        controller: controller.nameController,
+                        hintText: "Full Name",
+                        showSuffix: false,
+                        validator: controller.validateName,
                       ),
-                      ontap: () {
-                        bool valid = _signUpformKey.currentState!.validate();
-                        if (valid) {}
-                      },
-                    ),
-                  ],
+
+                      const SizedBox(height: 20),
+                      CustomTextField(
+                        icon: Icons.email,
+                        controller: controller.emailController,
+                        hintText: "Email",
+                        showSuffix: false,
+                        validator: controller.validateEmail,
+                      ),
+                      const SizedBox(height: 20),
+                      CustomTextField(
+                        controller: controller.passwordController,
+                        hintText: "Password",
+                        icon: Icons.lock,
+                        showSuffix: true,
+                        validator: controller.validatePassword,
+                      ),
+
+                      const SizedBox(height: 20),
+                      const SizedBox(height: 8),
+                      CustomTextField(
+                        icon: Icons.lock_outline,
+                        controller: controller.confirmPasswordController,
+                        hintText: "Confirm Password",
+                        showSuffix: true,
+                        validator: (value) {
+                          if (value != controller.passwordController.text) {
+                            return 'Passwords do not match';
+                          }
+                          return null;
+                        },
+                      ),
+
+                      const SizedBox(height: 30),
+                      AuthButton(
+                        widget: Text(
+                          "Sign up",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                        ),
+                        ontap: () {
+                          controller.submitClicked.value = true;
+                          bool valid = _signUpformKey.currentState!.validate();
+                          if (valid) {}
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

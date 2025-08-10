@@ -69,7 +69,7 @@ class Landing extends StatelessWidget {
                 title,
                 style: const TextStyle(
                   height: 1.1,
-                  fontSize: 26,
+                  fontSize: 23,
                   fontWeight: FontWeight.w500,
                 ),
                 textAlign: TextAlign.center,
@@ -79,7 +79,7 @@ class Landing extends StatelessWidget {
               const SizedBox(height: 16),
               // Description Text
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 70),
+                padding: const EdgeInsets.symmetric(horizontal: 50),
                 child: Text(
                   description,
                   style: const TextStyle(fontSize: 16),

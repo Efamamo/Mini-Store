@@ -13,6 +13,7 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffF9F7F1),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -28,38 +29,47 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
                 top: 10,
                 bottom: 20,
               ),
-              child: Form(
-                key: _forgotPasswordKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Enter your email to reset your password",
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
+              child: Obx(
+                () => Form(
+                  key: _forgotPasswordKey,
+                  autovalidateMode:
+                      controller.submitClicked.value
+                          ? AutovalidateMode.onUserInteraction
+                          : AutovalidateMode.disabled,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Enter your email to reset your password",
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    CustomTextField(
-                      icon: Icons.person,
-                      controller: controller.emailController,
-                      hintText: "Email",
-                      showSuffix: false,
-                      validator: controller.validateEmail,
-                    ),
+                      const SizedBox(height: 10),
+                      CustomTextField(
+                        icon: Icons.person,
+                        controller: controller.emailController,
+                        hintText: "Email",
+                        showSuffix: false,
+                        validator: controller.validateEmail,
+                      ),
 
-                    const SizedBox(height: 20),
-                    AuthButton(
-                      widget: Text(
-                        "Send Reset OTP",
-                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      const SizedBox(height: 20),
+                      AuthButton(
+                        widget: Text(
+                          "Send Reset OTP",
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
+                        ontap: () {
+                          controller.submitClicked.value = true;
+                          if (_forgotPasswordKey.currentState!.validate()) {
+                            Get.toNamed(Routes.OTP_PAGE);
+                          }
+                        },
                       ),
-                      ontap: () {
-                        Get.toNamed(Routes.OTP_PAGE);
-                      },
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -9,6 +9,7 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffF9F7F1),
       appBar: AppBar(title: const Text('HomeView'), centerTitle: true),
       body: const Center(
         child: Text('HomeView is working', style: TextStyle(fontSize: 20)),

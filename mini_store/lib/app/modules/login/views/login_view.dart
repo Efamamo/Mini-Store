@@ -16,6 +16,7 @@ class LoginView extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffF9F7F1),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -53,57 +54,68 @@ class LoginView extends GetView<LoginController> {
                 top: 20,
                 bottom: 0,
               ),
-              child: Form(
-                key: _signinKey,
-                child: Column(
-                  children: [
-                    CustomTextField(
-                      icon: Icons.person,
-                      controller: controller.emailController,
-                      hintText: "Email",
-                      showSuffix: false,
-                      validator: controller.validateEmail,
-                    ),
+              child: Obx(
+                () => Form(
+                  key: _signinKey,
+                  autovalidateMode:
+                      controller.submitClicked.value
+                          ? AutovalidateMode.onUserInteraction
+                          : AutovalidateMode.disabled,
+                  child: Column(
+                    children: [
+                      CustomTextField(
+                        icon: Icons.person,
+                        controller: controller.emailController,
+                        hintText: "Email",
+                        showSuffix: false,
+                        validator: controller.validateEmail,
+                      ),
 
-                    const SizedBox(height: 20),
-                    CustomTextField(
-                      icon: Icons.lock,
-                      controller: controller.passwordController,
-                      hintText: "Password",
-                      showSuffix: true,
-                      validator: controller.validatePassword,
-                    ),
+                      const SizedBox(height: 20),
+                      CustomTextField(
+                        icon: Icons.lock,
+                        controller: controller.passwordController,
+                        hintText: "Password",
+                        showSuffix: true,
+                        validator: controller.validatePassword,
+                      ),
 
-                    const SizedBox(height: 10),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: GestureDetector(
-                        onTap: () {
-                          Get.toNamed(Routes.FORGOT_PASSWORD);
-                        },
-                        child: Text(
-                          "Forgot Password?",
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 15,
+                      const SizedBox(height: 10),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: GestureDetector(
+                          onTap: () {
+                            Get.toNamed(Routes.FORGOT_PASSWORD);
+                          },
+                          child: Text(
+                            "Forgot Password?",
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 15,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 30),
-                    AuthButton(
-                      widget: Text(
-                        "Login",
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
+                      const SizedBox(height: 30),
+                      AuthButton(
+                        widget: Text(
+                          "Login",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
                         ),
-                      ),
 
-                      ontap: () {},
-                    ),
-                  ],
+                        ontap: () {
+                          controller.submitClicked.value = true;
+                          if (_signinKey.currentState!.validate()) {
+                            Get.toNamed(Routes.HOME);
+                          }
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

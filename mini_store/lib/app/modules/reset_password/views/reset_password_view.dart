@@ -12,7 +12,7 @@ class ResetPasswordView extends GetView<ResetPasswordController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xffF9F7F1),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -29,43 +29,52 @@ class ResetPasswordView extends GetView<ResetPasswordController> {
                 top: 10,
                 bottom: 20,
               ),
-              child: Form(
-                key: _resetFormKey,
-                child: Column(
-                  children: [
-                    CustomTextField(
-                      icon: Icons.lock,
-                      controller: controller.passwordController,
-                      hintText: "New Password",
-                      showSuffix: true,
-                      validator: controller.validatePassword,
-                    ),
-
-                    const SizedBox(height: 20),
-                    CustomTextField(
-                      controller: controller.confirmPasswordController,
-                      hintText: "Confirm New Password",
-                      icon: Icons.lock,
-                      showSuffix: true,
-                      validator: (value) {
-                        if (value != controller.passwordController.text) {
-                          return 'Passwords do not match';
-                        }
-                        return null;
-                      },
-                    ),
-
-                    const SizedBox(height: 30),
-
-                    AuthButton(
-                      widget: Text(
-                        "Reset Password",
-                        style: TextStyle(color: Colors.white, fontSize: 20),
+              child: Obx(
+                () => Form(
+                  key: _resetFormKey,
+                  autovalidateMode:
+                      controller.submitClicked.value
+                          ? AutovalidateMode.onUserInteraction
+                          : AutovalidateMode.disabled,
+                  child: Column(
+                    children: [
+                      CustomTextField(
+                        icon: Icons.lock,
+                        controller: controller.passwordController,
+                        hintText: "New Password",
+                        showSuffix: true,
+                        validator: controller.validatePassword,
                       ),
 
-                      ontap: () {},
-                    ),
-                  ],
+                      const SizedBox(height: 20),
+                      CustomTextField(
+                        controller: controller.confirmPasswordController,
+                        hintText: "Confirm New Password",
+                        icon: Icons.lock,
+                        showSuffix: true,
+                        validator: (value) {
+                          if (value != controller.passwordController.text) {
+                            return 'Passwords do not match';
+                          }
+                          return null;
+                        },
+                      ),
+
+                      const SizedBox(height: 30),
+
+                      AuthButton(
+                        widget: Text(
+                          "Reset Password",
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
+
+                        ontap: () {
+                          controller.submitClicked.value = true;
+                          if (_resetFormKey.currentState!.validate()) {}
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

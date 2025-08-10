@@ -9,6 +9,7 @@ class OtpPageView extends GetView<OtpPageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffF9F7F1),
       body: SingleChildScrollView(
         child: Column(
           children: [

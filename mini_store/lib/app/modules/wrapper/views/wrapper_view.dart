@@ -16,7 +16,10 @@ class WrapperView extends GetView<WrapperController> {
             ? LoginView()
             : LandingPageView();
       }
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+      return const Scaffold(
+        backgroundColor: Color(0xffF9F7F1),
+        body: Center(child: CircularProgressIndicator()),
+      );
     });
   }
 }

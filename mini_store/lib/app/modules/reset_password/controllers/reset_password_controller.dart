@@ -7,6 +7,7 @@ class ResetPasswordController extends GetxController {
   final count = 0.obs;
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  var submitClicked = false.obs;
 
   String? validatePassword(password) {
     if (password.length == 0) {

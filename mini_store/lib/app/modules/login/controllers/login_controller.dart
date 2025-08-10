@@ -7,6 +7,7 @@ class LoginController extends GetxController {
   final count = 0.obs;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  var submitClicked = false.obs;
 
   String? validateEmail(email) {
     if (email.length == 0) {
