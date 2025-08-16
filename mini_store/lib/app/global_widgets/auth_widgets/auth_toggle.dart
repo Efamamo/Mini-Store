@@ -32,7 +32,7 @@ class AuthToggle extends StatelessWidget {
             child: Text(
               toText,
               style: const TextStyle(
-                color: Colors.blue,
+                color: const Color(0xFF3B82F6),
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),

@@ -9,7 +9,7 @@ class LandingPageView extends GetView<LandingPageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffF9F7F1),
+      backgroundColor: Colors.grey[50],
       body: Stack(
         children: [
           PageView(
@@ -77,7 +77,7 @@ class LandingPageView extends GetView<LandingPageController> {
                   // Circular Button
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
+                      backgroundColor: const Color(0xFF3B82F6),
                       shape: const CircleBorder(),
                       padding: const EdgeInsets.all(20),
                       elevation: 5,

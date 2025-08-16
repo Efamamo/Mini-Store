@@ -9,7 +9,7 @@ class OtpPageView extends GetView<OtpPageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffF9F7F1),
+      backgroundColor: Colors.grey[50],
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -53,7 +53,7 @@ class OtpPageView extends GetView<OtpPageController> {
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                           borderSide: const BorderSide(
-                            color: Colors.blue,
+                            color: const Color(0xFF3B82F6),
                             width: 2,
                           ),
                         ),

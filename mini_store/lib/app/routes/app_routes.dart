@@ -11,6 +11,17 @@ abstract class Routes {
   static const OTP_PAGE = _Paths.OTP_PAGE;
   static const LANDING_PAGE = _Paths.LANDING_PAGE;
   static const WRAPPER = _Paths.WRAPPER;
+  static const SEARCH_PAGE = _Paths.SEARCH_PAGE;
+  static const PRODUCTS = _Paths.PRODUCTS;
+  static const PROFILE = _Paths.PROFILE;
+  static const CART = _Paths.CART;
+  static const CHECKOUT = _Paths.CHECKOUT;
+  static const DASHBOARD = _Paths.DASHBOARD;
+  static const PRODUCT_DETAIL = _Paths.PRODUCT_DETAIL;
+  static const CATEGORIES = _Paths.CATEGORIES;
+  static const LISTINGS = _Paths.LISTINGS;
+  static const ADD_PRODUCT = _Paths.ADD_PRODUCT;
+  static const MY_PRODUCTS = _Paths.MY_PRODUCTS;
 }
 
 abstract class _Paths {
@@ -23,4 +34,15 @@ abstract class _Paths {
   static const OTP_PAGE = '/otp-page';
   static const LANDING_PAGE = '/landing-page';
   static const WRAPPER = '/wrapper';
+  static const SEARCH_PAGE = '/search-page';
+  static const PRODUCTS = '/products';
+  static const PROFILE = '/profile';
+  static const CART = '/cart';
+  static const CHECKOUT = '/checkout';
+  static const DASHBOARD = '/dashboard';
+  static const PRODUCT_DETAIL = '/product-detail';
+  static const CATEGORIES = '/categories';
+  static const LISTINGS = '/listings';
+  static const ADD_PRODUCT = '/add-product';
+  static const MY_PRODUCTS = '/my-products';
 }

@@ -16,7 +16,7 @@ class LoginView extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffF9F7F1),
+      backgroundColor: Colors.grey[50],
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -33,6 +33,9 @@ class LoginView extends GetView<LoginController> {
                     child: OAUTH(
                       name: "Google",
                       icon: "assets/icons/google.png",
+                      onPressed: () {
+                        controller.handleGoogleSignIn();
+                      },
                     ),
                   ),
                   const SizedBox(width: 20),
@@ -40,6 +43,9 @@ class LoginView extends GetView<LoginController> {
                     child: OAUTH(
                       name: "Facebook",
                       icon: "assets/icons/facebook.png",
+                      onPressed: () {
+                        controller.handleFacebookSignIn();
+                      },
                     ),
                   ),
                 ],
@@ -64,7 +70,7 @@ class LoginView extends GetView<LoginController> {
                   child: Column(
                     children: [
                       CustomTextField(
-                        icon: Icons.person,
+                        icon: Icons.email,
                         controller: controller.emailController,
                         hintText: "Email",
                         showSuffix: false,
@@ -81,21 +87,70 @@ class LoginView extends GetView<LoginController> {
                       ),
 
                       const SizedBox(height: 10),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: GestureDetector(
-                          onTap: () {
-                            Get.toNamed(Routes.FORGOT_PASSWORD);
-                          },
-                          child: Text(
-                            "Forgot Password?",
-                            style: TextStyle(
-                              color: Colors.blue,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 15,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // Fingerprint authentication button
+                          Obx(
+                            () =>
+                                controller.isBiometricAvailable.value
+                                    ? GestureDetector(
+                                      onTap:
+                                          controller.isAuthenticating.value
+                                              ? null
+                                              : () {
+                                                controller
+                                                    .authenticateWithBiometrics();
+                                              },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(12),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                            50,
+                                          ),
+                                          border: Border.all(
+                                            color: const Color(
+                                              0xFF3B82F6,
+                                            ).withOpacity(0.3),
+                                          ),
+                                        ),
+                                        child:
+                                            controller.isAuthenticating.value
+                                                ? const SizedBox(
+                                                  width: 20,
+                                                  height: 20,
+                                                  child: CircularProgressIndicator(
+                                                    strokeWidth: 2,
+                                                    valueColor:
+                                                        AlwaysStoppedAnimation<
+                                                          Color
+                                                        >(Color(0xFF3B82F6)),
+                                                  ),
+                                                )
+                                                : const Icon(
+                                                  Icons.fingerprint,
+                                                  color: Color(0xFF3B82F6),
+                                                  size: 24,
+                                                ),
+                                      ),
+                                    )
+                                    : const SizedBox.shrink(),
+                          ),
+                          // Forgot Password text
+                          GestureDetector(
+                            onTap: () {
+                              Get.toNamed(Routes.FORGOT_PASSWORD);
+                            },
+                            child: Text(
+                              "Forgot Password?",
+                              style: TextStyle(
+                                color: const Color(0xFF3B82F6),
+                                fontWeight: FontWeight.w600,
+                                fontSize: 15,
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
                       const SizedBox(height: 30),
                       AuthButton(

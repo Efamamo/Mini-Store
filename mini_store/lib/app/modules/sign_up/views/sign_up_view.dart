@@ -17,7 +17,7 @@ class SignUpView extends GetView<SignUpController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffF9F7F1),
+      backgroundColor: Colors.grey[50],
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -34,6 +34,9 @@ class SignUpView extends GetView<SignUpController> {
                     child: OAUTH(
                       name: "Google",
                       icon: "assets/icons/google.png",
+                      onPressed: () {
+                        controller.handleGoogleSignIn();
+                      },
                     ),
                   ),
                   const SizedBox(width: 20),
@@ -41,6 +44,9 @@ class SignUpView extends GetView<SignUpController> {
                     child: OAUTH(
                       name: "Facebook",
                       icon: "assets/icons/facebook.png",
+                      onPressed: () {
+                        controller.handleFacebookSignIn();
+                      },
                     ),
                   ),
                 ],

@@ -3,7 +3,13 @@ import 'package:flutter/material.dart';
 class OAUTH extends StatefulWidget {
   final String name;
   final String icon;
-  const OAUTH({super.key, required this.name, required this.icon});
+  final Function() onPressed;
+  const OAUTH({
+    super.key,
+    required this.name,
+    required this.icon,
+    required this.onPressed,
+  });
 
   @override
   State<OAUTH> createState() => _OAUTHState();
@@ -16,7 +22,7 @@ class _OAUTHState extends State<OAUTH> {
       style: OutlinedButton.styleFrom(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
-      onPressed: () {},
+      onPressed: widget.onPressed,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12.0),
         child: Row(

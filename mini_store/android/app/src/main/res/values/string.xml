@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mini Store</string>
+    <string name="facebook_app_id">646522445138144</string>
+    <string name="fb_login_protocol_scheme">fb646522445138144</string>
+    <string name="facebook_client_token">da91b1d510aca076aea04d9c8b95a702</string>
+</resources>

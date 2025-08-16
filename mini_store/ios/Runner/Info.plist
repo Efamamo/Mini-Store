@@ -45,5 +45,39 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	
+	<!-- Facebook Configuration -->
+	<key>FacebookAppID</key>
+	<string>646522445138144</string>
+	<key>FacebookClientToken</key>
+	<string>da91b1d510aca076aea04d9c8b95a702</string>
+	<key>FacebookDisplayName</key>
+	<string>Mini Store</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>facebook</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb646522445138144</string>
+			</array>
+		</dict>
+	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
+	
+	<!-- Location Usage Descriptions -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app needs access to location to show your current position and allow you to select delivery locations on the map.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This app needs access to location to show your current position and allow you to select delivery locations on the map.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>This app needs access to face id to authenticate you.</string>
 </dict>
 </plist>

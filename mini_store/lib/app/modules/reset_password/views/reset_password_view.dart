@@ -12,7 +12,7 @@ class ResetPasswordView extends GetView<ResetPasswordController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffF9F7F1),
+      backgroundColor: Colors.grey[50],
       body: SingleChildScrollView(
         child: Column(
           children: [
