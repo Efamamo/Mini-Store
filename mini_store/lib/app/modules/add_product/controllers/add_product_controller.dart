@@ -222,7 +222,31 @@ class AddProductController extends GetxController {
   bool validateCurrentStep() {
     switch (currentStep.value) {
       case 0: // Basic Info
-        return formKey.currentState?.validate() ?? false;
+        bool isValid =
+            validateName(nameController.text) == null &&
+            validateDescription(descriptionController.text) == null;
+
+        if (!isValid) {
+          // Show error message
+          String errorMessage = '';
+          if (validateName(nameController.text) != null) {
+            errorMessage =
+                'Please enter a valid product name (at least 3 characters)';
+          } else if (validateDescription(descriptionController.text) != null) {
+            errorMessage =
+                'Please enter a valid description (at least 10 characters)';
+          }
+
+          Get.snackbar(
+            'Validation Required',
+            errorMessage,
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.orange,
+            colorText: Colors.white,
+            duration: const Duration(seconds: 3),
+          );
+        }
+        return isValid;
       case 1: // Images
         if (selectedImages.isEmpty) {
           Get.snackbar(
@@ -236,20 +260,84 @@ class AddProductController extends GetxController {
         }
         return true;
       case 2: // Pricing
-        return validatePrice(priceController.text) == null &&
+        bool isPricingValid =
+            validatePrice(priceController.text) == null &&
             validateOriginalPrice(originalPriceController.text) == null;
+
+        if (!isPricingValid) {
+          String errorMessage = '';
+          if (validatePrice(priceController.text) != null) {
+            errorMessage = 'Please enter a valid price';
+          } else if (validateOriginalPrice(originalPriceController.text) !=
+              null) {
+            errorMessage =
+                'Please enter a valid original price or disable discount';
+          }
+
+          Get.snackbar(
+            'Validation Required',
+            errorMessage,
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.orange,
+            colorText: Colors.white,
+            duration: const Duration(seconds: 3),
+          );
+        }
+        return isPricingValid;
       case 3: // Category & Stock
-        return validateStock(stockController.text) == null;
+        bool isStockValid = validateStock(stockController.text) == null;
+
+        if (!isStockValid) {
+          Get.snackbar(
+            'Validation Required',
+            'Please enter a valid stock quantity',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.orange,
+            colorText: Colors.white,
+            duration: const Duration(seconds: 3),
+          );
+        }
+        return isStockValid;
       default:
         return true;
     }
   }
 
   Future<void> saveProduct() async {
-    if (!formKey.currentState!.validate()) {
+    // Validate all steps before saving
+    bool isValid = true;
+    String errorMessage = '';
+
+    // Validate basic info
+    if (validateName(nameController.text) != null ||
+        validateDescription(descriptionController.text) != null) {
+      isValid = false;
+      errorMessage = 'Please complete the basic information correctly';
+    }
+
+    // Validate images
+    if (selectedImages.isEmpty) {
+      isValid = false;
+      errorMessage = 'Please add at least one product image';
+    }
+
+    // Validate pricing
+    if (validatePrice(priceController.text) != null ||
+        validateOriginalPrice(originalPriceController.text) != null) {
+      isValid = false;
+      errorMessage = 'Please complete the pricing information correctly';
+    }
+
+    // Validate stock
+    if (validateStock(stockController.text) != null) {
+      isValid = false;
+      errorMessage = 'Please enter a valid stock quantity';
+    }
+
+    if (!isValid) {
       Get.snackbar(
         'Validation Error',
-        'Please fix all errors before saving',
+        errorMessage,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,

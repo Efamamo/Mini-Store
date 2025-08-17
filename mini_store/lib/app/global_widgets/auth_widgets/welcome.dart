@@ -47,7 +47,14 @@ class AppName extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 5),
-          Text(subText, style: const TextStyle()),
+          Align(
+            alignment: Alignment.center,
+            child: Text(
+              subText,
+              style: const TextStyle(),
+              textAlign: TextAlign.center,
+            ),
+          ),
         ],
       ),
     );

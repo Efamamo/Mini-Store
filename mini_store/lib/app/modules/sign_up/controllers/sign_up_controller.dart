@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:mini_store/app/routes/app_pages.dart';
 
 class SignUpController extends GetxController {
   final count = 0.obs;
@@ -86,6 +87,18 @@ class SignUpController extends GetxController {
     } catch (error) {
       print("Facebook Sign-In Error: $error");
     }
+  }
+
+  void signUpWithAddress() {
+    // Navigate to address setup page
+    Get.toNamed(Routes.ADDRESS);
+  }
+
+  void signUpWithoutAddress() {
+    // Skip address setup and go directly to home
+    // Here you would typically handle user registration with backend
+    // For now, just navigate to home
+    Get.offAllNamed(Routes.HOME);
   }
 
   @override

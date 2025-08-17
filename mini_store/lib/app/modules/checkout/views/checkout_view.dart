@@ -271,7 +271,10 @@ class CheckoutView extends GetView<CheckoutController> {
                               return Column(
                                 children: [
                                   ListTile(
-                                    contentPadding: const EdgeInsets.all(20),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 20,
+                                      vertical: 10,
+                                    ),
                                     leading: Container(
                                       width: 60,
                                       height: 60,
@@ -288,6 +291,8 @@ class CheckoutView extends GetView<CheckoutController> {
                                     ),
                                     title: Text(
                                       item['name'],
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600,
@@ -311,7 +316,7 @@ class CheckoutView extends GetView<CheckoutController> {
                                         Text(
                                           '\$${item['price'].toStringAsFixed(2)}',
                                           style: const TextStyle(
-                                            fontSize: 18,
+                                            fontSize: 16,
                                             fontWeight: FontWeight.w700,
                                             color: Color(0xFF10B981),
                                           ),

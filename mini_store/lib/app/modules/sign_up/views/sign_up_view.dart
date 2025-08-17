@@ -113,18 +113,22 @@ class SignUpView extends GetView<SignUpController> {
                       ),
 
                       const SizedBox(height: 30),
+                      // Primary Sign Up button (with address)
                       AuthButton(
                         widget: Text(
-                          "Sign up",
+                          "Continue",
                           style: const TextStyle(
                             color: Colors.white,
-                            fontSize: 20,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                         ontap: () {
                           controller.submitClicked.value = true;
                           bool valid = _signUpformKey.currentState!.validate();
-                          if (valid) {}
+                          if (valid) {
+                            controller.signUpWithAddress();
+                          }
                         },
                       ),
                     ],

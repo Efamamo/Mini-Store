@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mini_store/app/modules/checkout/views/location_picker_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ChangeNameBottomSheet extends StatefulWidget {
@@ -64,13 +65,13 @@ class _ChangeNameBottomSheetState extends State<ChangeNameBottomSheet> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF3B82F6).withOpacity(0.1),
+                    color: const Color(0xFF10B981).withOpacity(0.1),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
                     Icons.person_outline,
                     size: 32,
-                    color: Color(0xFF3B82F6),
+                    color: Color(0xFF10B981),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -113,7 +114,7 @@ class _ChangeNameBottomSheetState extends State<ChangeNameBottomSheet> {
                         contentPadding: const EdgeInsets.all(20),
                         prefixIcon: Icon(
                           Icons.person_outline,
-                          color: Colors.grey.shade600,
+                          color: Color(0xFF10B981),
                         ),
                       ),
                       validator: (value) {
@@ -162,12 +163,12 @@ class _ChangeNameBottomSheetState extends State<ChangeNameBottomSheet> {
                           height: 56,
                           decoration: BoxDecoration(
                             gradient: const LinearGradient(
-                              colors: [Color(0xFF3B82F6), Color(0xFF1D4ED8)],
+                              colors: [Color(0xFF10B981), Color(0xFF059669)],
                             ),
                             borderRadius: BorderRadius.circular(16),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xFF3B82F6).withOpacity(0.3),
+                                color: const Color(0xFF10B981).withOpacity(0.3),
                                 blurRadius: 12,
                                 offset: const Offset(0, 4),
                               ),
@@ -275,13 +276,13 @@ class _ChangeEmailBottomSheetState extends State<ChangeEmailBottomSheet> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF10B981).withOpacity(0.1),
+                    color: const Color(0xFF3B82F6).withOpacity(0.1),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
                     Icons.email_outlined,
                     size: 32,
-                    color: Color(0xFF10B981),
+                    color: Color(0xFF3B82F6),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -325,7 +326,7 @@ class _ChangeEmailBottomSheetState extends State<ChangeEmailBottomSheet> {
                         contentPadding: const EdgeInsets.all(20),
                         prefixIcon: Icon(
                           Icons.email_outlined,
-                          color: Colors.grey.shade600,
+                          color: Color(0xFF3B82F6),
                         ),
                       ),
                       validator: (value) {
@@ -377,12 +378,12 @@ class _ChangeEmailBottomSheetState extends State<ChangeEmailBottomSheet> {
                           height: 56,
                           decoration: BoxDecoration(
                             gradient: const LinearGradient(
-                              colors: [Color(0xFF10B981), Color(0xFF059669)],
+                              colors: [Color(0xFF3B82F6), Color(0xFF3B82F6)],
                             ),
                             borderRadius: BorderRadius.circular(16),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xFF10B981).withOpacity(0.3),
+                                color: const Color(0xFF3B82F6).withOpacity(0.3),
                                 blurRadius: 12,
                                 offset: const Offset(0, 4),
                               ),
@@ -419,6 +420,277 @@ class _ChangeEmailBottomSheetState extends State<ChangeEmailBottomSheet> {
                   ),
                 ],
               ),
+            ),
+          ),
+          const SizedBox(height: 32),
+        ],
+      ),
+    );
+  }
+}
+
+class ChangeAddressBottomSheet extends StatefulWidget {
+  final String currentAddress;
+  final Function(String) onAddressChanged;
+
+  const ChangeAddressBottomSheet({
+    Key? key,
+    required this.currentAddress,
+    required this.onAddressChanged,
+  }) : super(key: key);
+
+  @override
+  State<ChangeAddressBottomSheet> createState() =>
+      _ChangeAddressBottomSheetState();
+}
+
+class _ChangeAddressBottomSheetState extends State<ChangeAddressBottomSheet> {
+  final hasPickedLocation = false.obs;
+  final placeName = "".obs;
+  final latitude = 0.0.obs;
+  final longitude = 0.0.obs;
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(25),
+          topRight: Radius.circular(25),
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Handle bar
+          Container(
+            margin: const EdgeInsets.only(top: 12),
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: Colors.grey.shade300,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+
+          // Header
+          Container(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Color(0xFF10B981).withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.location_on_outlined,
+                    size: 32,
+                    color: Color(0xFF10B981),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'Change Store Address',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF1F2937),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Update your store address',
+                  style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
+                ),
+              ],
+            ),
+          ),
+
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.08),
+                  spreadRadius: 0,
+                  blurRadius: 20,
+                  offset: const Offset(0, 8),
+                ),
+              ],
+            ),
+            child: Obx(
+              () => ListTile(
+                contentPadding: const EdgeInsets.all(20),
+                onTap: () {
+                  try {
+                    // Open location picker with current coordinates or default to Addis Ababa
+                    double initialLat =
+                        hasPickedLocation.value ? latitude.value : 9.0820;
+                    double initialLng =
+                        hasPickedLocation.value ? longitude.value : 38.7636;
+
+                    Get.to(
+                      () => LocationPickerView(
+                        initialLatitude: initialLat,
+                        initialLongitude: initialLng,
+                        onLocationSelected: (lat, lng, place) {
+                          // Update the location values
+                          latitude.value = lat;
+                          longitude.value = lng;
+                          placeName.value = place;
+                          hasPickedLocation.value = true;
+                        },
+                      ),
+                    );
+                  } catch (e) {
+                    Get.snackbar(
+                      "Error",
+                      "Failed to open location picker: ${e.toString()}",
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Colors.red,
+                      colorText: Colors.white,
+                    );
+                  }
+                },
+                leading: Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Color(0xFF10B981).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(
+                    Icons.my_location,
+                    color: Color(0xFF10B981),
+                    size: 24,
+                  ),
+                ),
+                title: Text(
+                  !hasPickedLocation.value
+                      ? "Choose Store Location"
+                      : "Store Location Selected",
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF1E293B),
+                  ),
+                ),
+                subtitle: Obx(
+                  () => Text(
+                    !hasPickedLocation.value
+                        ? "Tap to select store location on map"
+                        : placeName.isNotEmpty
+                        ? placeName.value
+                        : "Store location coordinates saved",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey[600],
+                      fontWeight: FontWeight.w500,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                trailing: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(
+                    Icons.keyboard_arrow_right_outlined,
+                    color: Color(0xFF10B981),
+                    size: 20,
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              children: [
+                const SizedBox(height: 24),
+
+                // Action buttons
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 6,
+                      child: Container(
+                        height: 56,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade100,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: TextButton(
+                          onPressed: () => Get.back(),
+                          child: Text(
+                            'Cancel',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey.shade700,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      flex: 11,
+                      child: Container(
+                        height: 56,
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFF10B981), Color(0xFF10B981)],
+                          ),
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFF10B981).withOpacity(0.3),
+                              blurRadius: 12,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            widget.onAddressChanged(placeName.value);
+                            Get.back();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            shadowColor: Colors.transparent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                          child: const Text(
+                            'Update Store Address',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 32),
@@ -1386,6 +1658,220 @@ class _TermsConditionsBottomSheetState
           Text(
             description,
             style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ChangeStoreNameBottomSheet extends StatefulWidget {
+  final String currentStoreName;
+  final Function(String) onStoreNameChanged;
+
+  const ChangeStoreNameBottomSheet({
+    Key? key,
+    required this.currentStoreName,
+    required this.onStoreNameChanged,
+  }) : super(key: key);
+
+  @override
+  State<ChangeStoreNameBottomSheet> createState() =>
+      _ChangeStoreNameBottomSheetState();
+}
+
+class _ChangeStoreNameBottomSheetState
+    extends State<ChangeStoreNameBottomSheet> {
+  late TextEditingController _storeNameController;
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    _storeNameController = TextEditingController(text: widget.currentStoreName);
+  }
+
+  @override
+  void dispose() {
+    _storeNameController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(25),
+          topRight: Radius.circular(25),
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Handle bar
+          Container(
+            margin: const EdgeInsets.only(top: 12),
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: Colors.grey.shade300,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+
+          // Header
+          Container(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF8B5CF6).withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.store_outlined,
+                    size: 32,
+                    color: Color(0xFF8B5CF6),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'Change Store Name',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF1F2937),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Update your store name',
+                  style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
+                ),
+              ],
+            ),
+          ),
+
+          // Form
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade50,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: Colors.grey.shade200),
+                    ),
+                    child: TextFormField(
+                      controller: _storeNameController,
+                      decoration: InputDecoration(
+                        hintText: 'Enter your store name',
+                        hintStyle: TextStyle(color: Colors.grey.shade400),
+                        border: InputBorder.none,
+                        contentPadding: const EdgeInsets.all(20),
+                        prefixIcon: Icon(
+                          Icons.store_outlined,
+                          color: Color(0xFF8B5CF6),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Please enter your store name';
+                        }
+                        if (value.trim().length < 2) {
+                          return 'Store name must be at least 2 characters';
+                        }
+                        return null;
+                      },
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Action buttons
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Container(
+                          height: 56,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: TextButton(
+                            onPressed: () => Get.back(),
+                            child: Text(
+                              'Cancel',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.grey.shade700,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        flex: 3,
+                        child: Container(
+                          height: 56,
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [Color(0xFF8B5CF6), Color(0xFF7C3AED)],
+                            ),
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFF8B5CF6).withOpacity(0.3),
+                                blurRadius: 12,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                widget.onStoreNameChanged(
+                                  _storeNameController.text.trim(),
+                                );
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              shadowColor: Colors.transparent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                            ),
+                            child: const Text(
+                              'Update Store Name',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                ],
+              ),
+            ),
           ),
         ],
       ),

@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import '../modules/add_product/bindings/add_product_binding.dart';
 import '../modules/add_product/views/add_product_view.dart';
+import '../modules/address/bindings/address_binding.dart';
+import '../modules/address/views/address_view.dart';
 import '../modules/cart/bindings/cart_binding.dart';
 import '../modules/cart/views/cart_view.dart';
 import '../modules/categories/bindings/categories_binding.dart';
@@ -141,6 +143,11 @@ class AppPages {
       name: _Paths.MY_PRODUCTS,
       page: () => const MyProductsView(),
       binding: MyProductsBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADDRESS,
+      page: () => AddressView(),
+      binding: AddressBinding(),
     ),
   ];
 }

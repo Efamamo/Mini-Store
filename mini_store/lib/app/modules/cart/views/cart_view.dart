@@ -191,7 +191,7 @@ class CartView extends GetView<CartController> {
                                   color: Color(0xFF1E293B),
                                   height: 1.3,
                                 ),
-                                maxLines: 2,
+                                maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
                               const SizedBox(height: 4),
@@ -217,7 +217,7 @@ class CartView extends GetView<CartController> {
                               Text(
                                 '\$${item['price'].toStringAsFixed(2)}',
                                 style: const TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w800,
                                   color: Color(0xFF10B981),
                                 ),

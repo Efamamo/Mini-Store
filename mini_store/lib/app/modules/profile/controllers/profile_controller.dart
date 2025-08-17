@@ -12,6 +12,11 @@ class ProfileController extends GetxController {
   // Profile data observables
   final userName = 'User'.obs;
   final userEmail = 'user@gmail.com'.obs;
+  final userAddress = 'Addis Ababa, Ethiopia'.obs;
+
+  // Store information observables
+  final storeName = 'My Store'.obs;
+  final storeAddress = 'Addis Ababa, Ethiopia'.obs;
 
   @override
   void onInit() {
@@ -171,6 +176,35 @@ class ProfileController extends GetxController {
       case 'chat':
         // Open live chat
         break;
+    }
+  }
+
+  // Store information update methods
+  void updateStoreName(String newStoreName) {
+    if (newStoreName.trim().isNotEmpty) {
+      storeName.value = newStoreName.trim();
+      Get.back();
+      Get.snackbar(
+        'Success',
+        'Store name updated successfully',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: const Color(0xFF10B981),
+        colorText: Colors.white,
+      );
+    }
+  }
+
+  void updateStoreAddress(String newStoreAddress) {
+    if (newStoreAddress.trim().isNotEmpty) {
+      storeAddress.value = newStoreAddress.trim();
+      Get.back();
+      Get.snackbar(
+        'Success',
+        'Store address updated successfully',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: const Color(0xFF10B981),
+        colorText: Colors.white,
+      );
     }
   }
 }

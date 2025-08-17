@@ -147,16 +147,7 @@ class _LocationPickerViewState extends State<LocationPickerView> {
 
       print("Callback completed, showing success message"); // Debug print
       // Show success message
-      Get.snackbar(
-        "Success",
-        "Delivery location selected successfully",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
 
-      print("About to call Navigator.pop()"); // Debug print
-      // Then close the map
       Navigator.of(context).pop();
       print("Navigator.pop() called"); // Debug print
     } catch (e) {
