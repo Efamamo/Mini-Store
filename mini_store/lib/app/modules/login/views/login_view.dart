@@ -88,67 +88,58 @@ class LoginView extends GetView<LoginController> {
 
                       const SizedBox(height: 10),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           // Fingerprint authentication button
                           Obx(
                             () =>
                                 controller.isBiometricAvailable.value
-                                    ? GestureDetector(
-                                      onTap:
-                                          controller.isAuthenticating.value
-                                              ? null
-                                              : () {
+                                    ? !controller.hasUserLoggedInBefore.value
+                                        ? const SizedBox.shrink()
+                                        : GestureDetector(
+                                          onTap:
+                                              controller.isAuthenticating.value
+                                                  ? null
+                                                  : () {
+                                                    controller
+                                                        .authenticateWithBiometrics();
+                                                  },
+                                          child: Container(
+                                            padding: const EdgeInsets.all(12),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                              border: Border.all(
+                                                color: const Color(
+                                                  0xFF3B82F6,
+                                                ).withOpacity(0.3),
+                                              ),
+                                            ),
+                                            child:
                                                 controller
-                                                    .authenticateWithBiometrics();
-                                              },
-                                      child: Container(
-                                        padding: const EdgeInsets.all(12),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                            50,
+                                                        .isAuthenticating
+                                                        .value
+                                                    ? const SizedBox(
+                                                      width: 20,
+                                                      height: 20,
+                                                      child: CircularProgressIndicator(
+                                                        strokeWidth: 2,
+                                                        valueColor:
+                                                            AlwaysStoppedAnimation<
+                                                              Color
+                                                            >(
+                                                              Color(0xFF3B82F6),
+                                                            ),
+                                                      ),
+                                                    )
+                                                    : const Icon(
+                                                      Icons.fingerprint,
+                                                      color: Color(0xFF3B82F6),
+                                                      size: 24,
+                                                    ),
                                           ),
-                                          border: Border.all(
-                                            color: const Color(
-                                              0xFF3B82F6,
-                                            ).withOpacity(0.3),
-                                          ),
-                                        ),
-                                        child:
-                                            controller.isAuthenticating.value
-                                                ? const SizedBox(
-                                                  width: 20,
-                                                  height: 20,
-                                                  child: CircularProgressIndicator(
-                                                    strokeWidth: 2,
-                                                    valueColor:
-                                                        AlwaysStoppedAnimation<
-                                                          Color
-                                                        >(Color(0xFF3B82F6)),
-                                                  ),
-                                                )
-                                                : const Icon(
-                                                  Icons.fingerprint,
-                                                  color: Color(0xFF3B82F6),
-                                                  size: 24,
-                                                ),
-                                      ),
-                                    )
+                                        )
                                     : const SizedBox.shrink(),
-                          ),
-                          // Forgot Password text
-                          GestureDetector(
-                            onTap: () {
-                              Get.toNamed(Routes.FORGOT_PASSWORD);
-                            },
-                            child: Text(
-                              "Forgot Password?",
-                              style: TextStyle(
-                                color: const Color(0xFF3B82F6),
-                                fontWeight: FontWeight.w600,
-                                fontSize: 15,
-                              ),
-                            ),
                           ),
                         ],
                       ),
@@ -165,7 +156,7 @@ class LoginView extends GetView<LoginController> {
                         ontap: () {
                           controller.submitClicked.value = true;
                           if (_signinKey.currentState!.validate()) {
-                            Get.toNamed(Routes.HOME);
+                            controller.login();
                           }
                         },
                       ),

@@ -2,7 +2,6 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:mini_store/app/modules/profile/controllers/profile_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:mini_store/app/routes/app_pages.dart';
 import 'package:mini_store/app/global_widgets/profile_bottom_sheets.dart';
 
 class ProfileView extends GetView<ProfileController> {
@@ -103,7 +102,10 @@ class ProfileView extends GetView<ProfileController> {
 
                       // Main content
                       Padding(
-                        padding: const EdgeInsets.all(24),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 24,
+                        ),
                         child: Row(
                           children: [
                             // Stunning Profile Picture
@@ -292,40 +294,53 @@ class ProfileView extends GetView<ProfileController> {
                                   const SizedBox(height: 8),
 
                                   // Profile completion or stats
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 6,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white.withOpacity(0.15),
-                                      borderRadius: BorderRadius.circular(20),
-                                      border: Border.all(
-                                        color: Colors.white.withOpacity(0.3),
-                                        width: 1,
-                                      ),
-                                    ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Icon(
-                                          Icons.store,
-                                          size: 14,
-                                          color: Colors.white.withOpacity(0.9),
-                                        ),
-                                        const SizedBox(width: 6),
-                                        Text(
-                                          'Store Owner',
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Colors.white.withOpacity(
-                                              0.9,
-                                            ),
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                  Obx(
+                                    () =>
+                                        controller.storeName.value != '-' &&
+                                                controller.storeAddress.value !=
+                                                    '-'
+                                            ? Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 12,
+                                                    vertical: 6,
+                                                  ),
+                                              decoration: BoxDecoration(
+                                                color: Colors.white.withOpacity(
+                                                  0.15,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                border: Border.all(
+                                                  color: Colors.white
+                                                      .withOpacity(0.3),
+                                                  width: 1,
+                                                ),
+                                              ),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Icon(
+                                                    Icons.store,
+                                                    size: 14,
+                                                    color: Colors.white
+                                                        .withOpacity(0.9),
+                                                  ),
+                                                  const SizedBox(width: 6),
+                                                  Text(
+                                                    'Store Owner',
+                                                    style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Colors.white
+                                                          .withOpacity(0.9),
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                            : const SizedBox.shrink(),
                                   ),
                                 ],
                               ),
@@ -472,16 +487,7 @@ class ProfileView extends GetView<ProfileController> {
                           size: 20,
                         ),
                       ),
-                      onTap: () {
-                        Get.bottomSheet(
-                          ChangeEmailBottomSheet(
-                            currentEmail: controller.userEmail.value,
-                            onEmailChanged: controller.updateEmail,
-                          ),
-                          isScrollControlled: true,
-                          backgroundColor: Colors.transparent,
-                        );
-                      },
+                      onTap: () {},
                     ),
                   ),
                 ],
@@ -901,62 +907,69 @@ class ProfileView extends GetView<ProfileController> {
               ),
               child: Column(
                 children: [
-                  // Change Password
-                  ListTile(
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 4,
-                    ),
-                    leading: Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFEF4444).withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Icon(
-                        Icons.lock_outline,
-                        color: Color(0xFFEF4444),
-                        size: 20,
-                      ),
-                    ),
-                    title: const Text(
-                      'Change Password',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF1E293B),
-                      ),
-                    ),
-                    subtitle: Text(
-                      'Update your password',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey[600],
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    trailing: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade100,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Icon(
-                        Icons.keyboard_arrow_right_outlined,
-                        color: Colors.grey.shade600,
-                        size: 20,
-                      ),
-                    ),
-                    onTap: () {
-                      Get.bottomSheet(
-                        ChangePasswordBottomSheet(
-                          onPasswordChanged: controller.changePassword,
-                        ),
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                      );
-                    },
+                  Obx(
+                    () =>
+                        controller.fromProvider.value == false
+                            ? ListTile(
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 4,
+                              ),
+                              leading: Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: const Color(
+                                    0xFFEF4444,
+                                  ).withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: const Icon(
+                                  Icons.lock_outline,
+                                  color: Color(0xFFEF4444),
+                                  size: 20,
+                                ),
+                              ),
+                              title: const Text(
+                                'Change Password',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xFF1E293B),
+                                ),
+                              ),
+                              subtitle: Text(
+                                'Update your password',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey[600],
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              trailing: Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade100,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Icon(
+                                  Icons.keyboard_arrow_right_outlined,
+                                  color: Colors.grey.shade600,
+                                  size: 20,
+                                ),
+                              ),
+                              onTap: () {
+                                Get.bottomSheet(
+                                  ChangePasswordBottomSheet(
+                                    onPasswordChanged:
+                                        controller.changePassword,
+                                  ),
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                );
+                              },
+                            )
+                            : const SizedBox.shrink(),
                   ),
                   Divider(
                     color: Colors.grey.shade200,
@@ -1153,7 +1166,7 @@ class ProfileView extends GetView<ProfileController> {
                         size: 20,
                       ),
                     ),
-                    onTap: () => Get.offAllNamed(Routes.LOGIN),
+                    onTap: () => controller.logout(),
                   ),
                   Divider(
                     color: Colors.grey.shade200,

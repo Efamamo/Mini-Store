@@ -22,6 +22,9 @@ export class User {
     @OneToOne(() => Address)
     @JoinColumn()
     address: Address;
+
+    @Column({default: false})
+    fromProvider: boolean;
     
     
 }

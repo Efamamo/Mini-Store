@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString, MinLength, ValidateNested } from "class-validator";
+import { IsBoolean, IsEmail, IsNotEmpty, IsOptional, IsString, MinLength, ValidateNested } from "class-validator";
 import { AddressDto } from "./addressDto";
 import { Type } from "class-transformer";
 
@@ -21,4 +21,8 @@ export class SignupDto {
     @ValidateNested()
     @Type(() => AddressDto)
     address?: AddressDto;
+
+    @IsOptional()
+    @IsBoolean()
+    fromProvider?: boolean;
 }

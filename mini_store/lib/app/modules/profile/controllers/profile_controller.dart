@@ -1,26 +1,32 @@
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:mini_store/app/routes/app_pages.dart';
+import 'package:mini_store/app/data/repositories/auth.dart';
+import 'package:mini_store/app/data/repositories/user.dart';
 
 class ProfileController extends GetxController {
+  final AuthRepository authRepository = AuthRepository();
+  final UserRepository userRepository = UserRepository();
   // Observable variables for profile features
   final currentLanguage = 'English'.obs;
   final currentTheme = 'Light Theme'.obs;
   final isDarkMode = false.obs;
   final isLanguageExpanded = false.obs;
+  final fromProvider = false.obs;
 
   // Profile data observables
-  final userName = 'User'.obs;
-  final userEmail = 'user@gmail.com'.obs;
-  final userAddress = 'Addis Ababa, Ethiopia'.obs;
+  final userName = '-'.obs;
+  final userEmail = '-'.obs;
 
   // Store information observables
-  final storeName = 'My Store'.obs;
-  final storeAddress = 'Addis Ababa, Ethiopia'.obs;
+  final storeName = '-'.obs;
+  final storeAddress = '-'.obs;
 
   @override
   void onInit() {
     super.onInit();
+    getUserData();
   }
 
   @override
@@ -108,7 +114,7 @@ class ProfileController extends GetxController {
     String currentPassword,
     String newPassword,
     String confirmPassword,
-  ) {
+  ) async {
     if (newPassword != confirmPassword) {
       Get.snackbar(
         'Error',
@@ -131,21 +137,43 @@ class ProfileController extends GetxController {
       return;
     }
 
-    // Here you would typically implement API call to change password
-    Get.snackbar(
-      'Success',
-      'Password changed successfully',
-      snackPosition: SnackPosition.TOP,
-      backgroundColor: const Color(0xFF10B981),
-      colorText: Colors.white,
+    final result = await userRepository.changePassword(
+      currentPassword,
+      newPassword,
     );
+    if (result) {
+      Get.snackbar(
+        'Success',
+        'Password changed successfully',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: const Color(0xFF10B981),
+        colorText: Colors.white,
+      );
+    }
+  }
+
+  Future<void> getUserData() async {
+    final user = await userRepository.getUserData();
+    if (user != null) {
+      userName.value = user.fullName;
+      userEmail.value = user.email;
+      if (user.address != null &&
+          user.address!.latitude.isNotEmpty &&
+          user.address!.longitude.isNotEmpty) {
+        storeAddress.value = await _getPlaceName(
+          double.parse(user.address!.latitude),
+          double.parse(user.address!.longitude),
+        );
+      }
+      storeName.value = user.address?.storeName ?? '-';
+      fromProvider.value = user.fromProvider;
+    }
   }
 
   // Logout functionality
   void logout() {
-    // Implement logout logic here
-    // Clear user data, tokens, etc.
-    // Navigate to login screen
+    authRepository.logout();
+    Get.offAllNamed(Routes.LOGIN);
   }
 
   // Account deletion
@@ -205,6 +233,55 @@ class ProfileController extends GetxController {
         backgroundColor: const Color(0xFF10B981),
         colorText: Colors.white,
       );
+    }
+  }
+
+  Future<String> _getPlaceName(double latitude, double longitude) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        latitude,
+        longitude,
+      );
+
+      if (placemarks.isNotEmpty) {
+        Placemark place = placemarks.first;
+        String placeName = "";
+
+        // Build a readable address
+        if (place.street != null && place.street!.isNotEmpty) {
+          placeName += place.street!;
+        }
+        if (place.subLocality != null && place.subLocality!.isNotEmpty) {
+          if (placeName.isNotEmpty) placeName += ", ";
+          placeName += place.subLocality!;
+        }
+        if (place.locality != null && place.locality!.isNotEmpty) {
+          if (placeName.isNotEmpty) placeName += ", ";
+          placeName += place.locality!;
+        }
+        if (place.administrativeArea != null &&
+            place.administrativeArea!.isNotEmpty) {
+          if (placeName.isNotEmpty) placeName += ", ";
+          placeName += place.administrativeArea!;
+        }
+        if (place.country != null && place.country!.isNotEmpty) {
+          if (placeName.isNotEmpty) placeName += ", ";
+          placeName += place.country!;
+        }
+
+        // If we couldn't build a readable address, use coordinates as fallback
+        if (placeName.isEmpty) {
+          placeName =
+              "Lat: ${latitude.toStringAsFixed(4)}, Lng: ${longitude.toStringAsFixed(4)}";
+        }
+
+        return placeName;
+      } else {
+        return "Lat: ${latitude.toStringAsFixed(4)}, Lng: ${longitude.toStringAsFixed(4)}";
+      }
+    } catch (e) {
+      print("Error getting place name: $e");
+      return "Lat: ${latitude.toStringAsFixed(4)}, Lng: ${longitude.toStringAsFixed(4)}";
     }
   }
 }

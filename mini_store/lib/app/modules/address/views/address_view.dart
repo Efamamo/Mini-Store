@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mini_store/app/global_widgets/auth_widgets/auth_button.dart';
 import 'package:mini_store/app/global_widgets/auth_widgets/welcome.dart';
-import 'package:mini_store/app/routes/app_pages.dart';
 
 import '../controllers/address_controller.dart';
 
@@ -226,7 +225,7 @@ class AddressView extends GetView<AddressController> {
                 ontap:
                     controller.isFormComplete
                         ? () {
-                          Get.toNamed(Routes.HOME);
+                          controller.signUpWithAddress();
                         }
                         : () {}, // Empty function when disabled
               ),
@@ -258,7 +257,7 @@ class AddressView extends GetView<AddressController> {
                   child: InkWell(
                     borderRadius: BorderRadius.circular(12),
                     onTap: () {
-                      Get.toNamed(Routes.HOME);
+                      controller.signUpWithoutAddress();
                     },
                     child: Center(
                       child: Row(

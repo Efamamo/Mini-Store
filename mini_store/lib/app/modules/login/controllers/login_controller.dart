@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:mini_store/app/data/repositories/auth.dart';
 import 'package:mini_store/app/routes/app_pages.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginController extends GetxController {
-  //TODO: Implement LoginController
+  final AuthRepository authRepository = AuthRepository();
 
   final count = 0.obs;
   final TextEditingController emailController = TextEditingController();
@@ -17,6 +19,7 @@ class LoginController extends GetxController {
   final LocalAuthentication _localAuth = LocalAuthentication();
   var isBiometricAvailable = false.obs;
   var isAuthenticating = false.obs;
+  var hasUserLoggedInBefore = false.obs;
 
   String? validateEmail(email) {
     if (email.length == 0) {
@@ -58,7 +61,18 @@ class LoginController extends GetxController {
 
       final idToken = auth.idToken;
 
-      print("idToken: $idToken");
+      if (idToken != null) {
+        final result = await authRepository.signInWithGoogle(idToken);
+        if (result != null) {
+          final prefs = await SharedPreferences.getInstance();
+          prefs.setString('accessToken', result.accessToken);
+          prefs.setString('refreshToken', result.refreshToken);
+          prefs.setString('fullName', result.fullName);
+          prefs.setString('id', result.id);
+          prefs.setString('email', result.email);
+          Get.offNamedUntil(Routes.HOME, (route) => false);
+        }
+      }
     } catch (error) {
       print("Google Sign-In Error: $error");
     }
@@ -73,7 +87,18 @@ class LoginController extends GetxController {
 
       if (result.status == LoginStatus.success) {
         final AccessToken accessToken = result.accessToken!;
-        print("accessToken: $accessToken");
+        final res = await authRepository.signInWithFacebook(
+          accessToken.tokenString,
+        );
+        if (res != null) {
+          final prefs = await SharedPreferences.getInstance();
+          prefs.setString('accessToken', res.accessToken);
+          prefs.setString('refreshToken', res.refreshToken);
+          prefs.setString('fullName', res.fullName);
+          prefs.setString('id', res.id);
+          prefs.setString('email', res.email);
+          Get.offNamedUntil(Routes.HOME, (route) => false);
+        }
       }
     } catch (error) {
       print("Facebook Sign-In Error: $error");
@@ -81,9 +106,11 @@ class LoginController extends GetxController {
   }
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
     _checkBiometricAvailability();
+    final prefs = await SharedPreferences.getInstance();
+    hasUserLoggedInBefore.value = prefs.getString('refreshToken') != null;
   }
 
   @override
@@ -96,7 +123,21 @@ class LoginController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
+  Future<void> login() async {
+    final result = await authRepository.signIn(
+      emailController.text,
+      passwordController.text,
+    );
+    if (result != null) {
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setString('accessToken', result.accessToken);
+      prefs.setString('refreshToken', result.refreshToken);
+      prefs.setString('fullName', result.fullName);
+      prefs.setString('id', result.id);
+      prefs.setString('email', result.email);
+      Get.offNamedUntil(Routes.HOME, (route) => false);
+    }
+  }
 
   // Check if biometric authentication is available
   Future<void> _checkBiometricAvailability() async {
@@ -142,8 +183,27 @@ class LoginController extends GetxController {
       );
 
       if (authenticated) {
-        // Navigate to home or perform login logic
-        Get.toNamed(Routes.HOME);
+        final prefs = await SharedPreferences.getInstance();
+        final token = prefs.getString('refreshToken');
+        if (token == null) {
+          Get.snackbar(
+            'Error',
+            'Please login first to use biometric authentication',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+          );
+          return;
+        }
+        final result = await authRepository.refreshToken(token);
+        if (result != null) {
+          prefs.setString('accessToken', result.accessToken);
+          prefs.setString('refreshToken', result.refreshToken);
+          prefs.setString('fullName', result.fullName);
+          prefs.setString('id', result.id);
+          prefs.setString('email', result.email);
+          Get.offNamedUntil(Routes.HOME, (route) => false);
+        }
       }
     } catch (e) {
       print('Biometric authentication error: $e');

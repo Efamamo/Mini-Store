@@ -6,6 +6,7 @@ import { Address } from './user/entity/address';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { UserVerification } from './user/entity/userVerification';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -18,6 +19,9 @@ import { UserVerification } from './user/entity/userVerification';
     entities: [User, Address, UserVerification],
     synchronize: true,
     ssl: true,
+  }), JwtModule.register({
+    global: true,    
+    signOptions: { expiresIn: '1h' },
   }), UserModule, AuthModule],
   controllers: [],
   providers: [],

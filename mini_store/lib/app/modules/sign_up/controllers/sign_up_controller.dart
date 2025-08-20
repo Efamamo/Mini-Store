@@ -2,9 +2,14 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:mini_store/app/data/repositories/auth.dart';
+import 'package:mini_store/app/data/repositories/user.dart';
 import 'package:mini_store/app/routes/app_pages.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpController extends GetxController {
+  final AuthRepository authRepository = AuthRepository();
+  final UserRepository userRepository = UserRepository();
   final count = 0.obs;
   final TextEditingController nameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -67,7 +72,23 @@ class SignUpController extends GetxController {
 
       final idToken = auth.idToken;
 
-      print("idToken: $idToken");
+      if (idToken != null) {
+        final result = await authRepository.signUpWithGoogle(
+          idToken,
+          null,
+          null,
+          null,
+        );
+        if (result != null) {
+          final prefs = await SharedPreferences.getInstance();
+          prefs.setString('accessToken', result.accessToken);
+          prefs.setString('refreshToken', result.refreshToken);
+          prefs.setString('fullName', result.fullName);
+          prefs.setString('id', result.id);
+          prefs.setString('email', result.email);
+          Get.offNamedUntil(Routes.HOME, (route) => false);
+        }
+      }
     } catch (error) {
       print("Google Sign-In Error: $error");
     }
@@ -82,16 +103,43 @@ class SignUpController extends GetxController {
 
       if (result.status == LoginStatus.success) {
         final AccessToken accessToken = result.accessToken!;
-        print("accessToken: $accessToken");
+        final res = await authRepository.signUpWithFacebook(
+          accessToken.tokenString,
+          null,
+          null,
+          null,
+        );
+        if (res != null) {
+          final prefs = await SharedPreferences.getInstance();
+          prefs.setString('accessToken', res.accessToken);
+          prefs.setString('refreshToken', res.refreshToken);
+          prefs.setString('fullName', res.fullName);
+          prefs.setString('id', res.id);
+          prefs.setString('email', res.email);
+          Get.offNamedUntil(Routes.HOME, (route) => false);
+        }
       }
     } catch (error) {
       print("Facebook Sign-In Error: $error");
     }
   }
 
-  void signUpWithAddress() {
+  Future<void> signUpWithAddress() async {
+    final isEmailTaken = await userRepository.checkEmailExists(
+      emailController.text,
+    );
+    if (isEmailTaken) {
+      return;
+    }
     // Navigate to address setup page
-    Get.toNamed(Routes.ADDRESS);
+    Get.toNamed(
+      Routes.ADDRESS,
+      arguments: {
+        'email': emailController.text,
+        'password': passwordController.text,
+        'fullName': nameController.text,
+      },
+    );
   }
 
   void signUpWithoutAddress() {

@@ -68,7 +68,11 @@ class CartView extends GetView<CartController> {
               gradient: const LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
+                colors: [
+                  Color(0xFF6366F1),
+                  Color(0xFF8B5CF6),
+                  Color(0xFFEC4899),
+                ],
               ),
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
