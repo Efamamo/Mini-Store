@@ -1,1 +1,1 @@
-const String baseUrl = 'http://10.132.218.246:3000';
+const String baseUrl = 'https://mini-store-ocke.onrender.com';

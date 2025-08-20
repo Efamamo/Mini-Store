@@ -217,17 +217,19 @@ class AddressView extends GetView<AddressController> {
               ),
 
               const SizedBox(height: 30),
-              AuthButton(
-                widget: Text(
-                  "Create Account with Store",
-                  style: const TextStyle(color: Colors.white, fontSize: 16),
+              Obx(
+                () => AuthButton(
+                  widget: Text(
+                    "Create Account with Store",
+                    style: const TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                  ontap:
+                      controller.isFormComplete
+                          ? () {
+                            controller.signUpWithAddress();
+                          }
+                          : () {}, // Empty function when disabled
                 ),
-                ontap:
-                    controller.isFormComplete
-                        ? () {
-                          controller.signUpWithAddress();
-                        }
-                        : () {}, // Empty function when disabled
               ),
 
               const SizedBox(height: 15),

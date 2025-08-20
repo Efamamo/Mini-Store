@@ -12,6 +12,11 @@ import { DeleteAccountDto } from './dtos/deleteAccountDto';
 export class UserController {
     constructor(private userService: UserService){}
 
+    @Get("/check-email-taken")
+    checkEmailTaken(@Query() emailTakenDto: EmailTakenDto){
+        return this.userService.checkEmailTaken(emailTakenDto);
+    }
+
     @UseGuards(AuthGuard) 
     @Get("/:id")   
     getUser(@Request() req){
@@ -19,10 +24,7 @@ export class UserController {
     }
 
 
-    @Get("/check-email-taken")
-    checkEmailTaken(@Query() emailTakenDto: EmailTakenDto){
-        return this.userService.checkEmailTaken(emailTakenDto);
-    }
+    
 
     @UseGuards(AuthGuard)
     @Patch("/:id/name")
