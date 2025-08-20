@@ -41,21 +41,28 @@ class AuthRepository with LoadingDialog, AlertDialogs {
   ) async {
     try {
       showLoading();
-      final body = {'email': email, 'password': password, 'fullName': fullName};
+
+      final body = <String, dynamic>{
+        'email': email,
+        'password': password,
+        'fullName': fullName,
+      };
 
       if (storeName != null) {
-        final address = {
+        body['address'] = {
           'latitude': latitude,
           'longitude': longitude,
           'storeName': storeName,
         };
-        body['address'] = jsonEncode(address);
       }
 
       final response = await http.post(
         Uri.parse('$baseUrl/auth/signup'),
-        body: body,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(body),
       );
+
+      print(response.body);
       final data = jsonDecode(response.body);
 
       if (response.statusCode == 201) {
@@ -80,18 +87,13 @@ class AuthRepository with LoadingDialog, AlertDialogs {
   ) async {
     try {
       showLoading();
-      final body = {'idToken': idToken};
-      if (storeName != null) {
-        final address = {
-          'latitude': latitude,
-          'longitude': longitude,
-          'storeName': storeName,
-        };
-        body['address'] = jsonEncode(address);
-      }
+
+      final body = <String, dynamic>{'idToken': idToken, 'fromProvider': true};
+
       final response = await http.post(
         Uri.parse('$baseUrl/auth/signup/google'),
-        body: body,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(body),
       );
 
       final data = jsonDecode(response.body);
@@ -118,18 +120,12 @@ class AuthRepository with LoadingDialog, AlertDialogs {
   ) async {
     try {
       showLoading();
-      final body = {'idToken': idToken};
-      if (storeName != null) {
-        final address = {
-          'latitude': latitude,
-          'longitude': longitude,
-          'storeName': storeName,
-        };
-        body['address'] = jsonEncode(address);
-      }
+      final body = <String, dynamic>{'idToken': idToken, 'fromProvider': true};
+
       final response = await http.post(
         Uri.parse('$baseUrl/auth/signup/facebook'),
-        body: body,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(body),
       );
 
       final data = jsonDecode(response.body);

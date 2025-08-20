@@ -60,6 +60,12 @@ class AddressController extends GetxController {
   bool get isFormComplete => hasPickedLocation.value && isStoreNameValid.value;
 
   Future<void> signUpWithAddress() async {
+    print(latitude.value);
+    print(longitude.value);
+    print(storeNameController.text);
+    print(email.value);
+    print(password.value);
+    print(fullName.value);
     final result = await authRepository.signUp(
       email.value,
       password.value,

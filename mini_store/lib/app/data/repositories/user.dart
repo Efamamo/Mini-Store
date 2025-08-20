@@ -162,7 +162,7 @@ class UserRepository with LoadingDialog, AlertDialogs {
     }
   }
 
-  Future<bool> deleteAccount(String password) async {
+  Future<bool> deleteAccount(String? password) async {
     try {
       showLoading();
       final prefs = await SharedPreferences.getInstance();
@@ -171,7 +171,7 @@ class UserRepository with LoadingDialog, AlertDialogs {
       final response = await http.delete(
         Uri.parse('$baseUrl/users/$id'),
         headers: {'Authorization': 'Bearer $token'},
-        body: {'password': password},
+        body: password != null ? {'password': password} : null,
       );
       final data = jsonDecode(response.body);
       if (response.statusCode == 200) {

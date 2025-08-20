@@ -1225,6 +1225,7 @@ class ProfileView extends GetView<ProfileController> {
                     onTap: () {
                       Get.bottomSheet(
                         DeleteAccountBottomSheet(
+                          fromProvider: controller.fromProvider.value,
                           onDeleteConfirmed: () {
                             controller.deleteAccount();
                           },

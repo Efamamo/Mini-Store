@@ -21,12 +21,11 @@ export class UserService {
     async createUser(signupDto: SignupDto) : Promise<User>{
         const hashedPassword = await bcrypt.hash(signupDto.password, 10);
 
-
         const user = this.userRepository.create({
             fullName: signupDto.fullName,
             email: signupDto.email,
             password: hashedPassword,
-            fromProvider: signupDto.fromProvider || false,
+            fromProvider:  signupDto.fromProvider || false,
         });
         
         if (signupDto.address){
@@ -147,9 +146,15 @@ export class UserService {
         if (!user){
             throw new UnauthorizedException('User not found');
         }
-        const isPasswordValid = await bcrypt.compare(deleteAccountDto.password, user.password);
-        if (!isPasswordValid){
-            throw new UnauthorizedException('Invalid password');
+
+        if (!user.fromProvider){
+            if (!deleteAccountDto.password){
+                throw new UnauthorizedException('Password is required');
+            }
+            const isPasswordValid = await bcrypt.compare(deleteAccountDto.password, user.password);
+            if (!isPasswordValid){
+                throw new UnauthorizedException('Invalid password');
+            }
         }
         return this.userRepository.delete(user.id);
     }

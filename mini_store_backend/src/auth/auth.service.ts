@@ -104,7 +104,7 @@ export class AuthService {
             if (userExists){
               throw new ConflictException('User already exists');
             }
-            const user = await this.userService.createUser({email, fullName : name as string, password: ''});
+            const user = await this.userService.createUser({email, fullName : name as string, password: '', fromProvider: true});
             const token = await this.signToken(user.id.toString());
             return { "userId": user.id, "accessToken": token.accessToken, "refreshToken": token.refreshToken, "fullName": user.fullName, "email": user.email};
           }
@@ -129,7 +129,7 @@ export class AuthService {
             if (userExists){
               throw new ConflictException('User already exists');
             }
-            const user = await this.userService.createUser({email, fullName : name as string, password: ''});
+            const user = await this.userService.createUser({email, fullName : name as string, password: '', fromProvider: true});
             const token = await this.signToken(user.id.toString());
             return { "userId": user.id, "accessToken": token.accessToken, "refreshToken": token.refreshToken, "fullName": user.fullName, "email": user.email};
           }

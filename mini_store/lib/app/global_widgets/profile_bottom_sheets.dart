@@ -1926,10 +1926,14 @@ class _ChangeStoreNameBottomSheetState
 }
 
 class DeleteAccountBottomSheet extends StatefulWidget {
+  final bool fromProvider;
   final VoidCallback onDeleteConfirmed;
 
-  const DeleteAccountBottomSheet({Key? key, required this.onDeleteConfirmed})
-    : super(key: key);
+  const DeleteAccountBottomSheet({
+    Key? key,
+    required this.onDeleteConfirmed,
+    required this.fromProvider,
+  }) : super(key: key);
 
   @override
   State<DeleteAccountBottomSheet> createState() =>
@@ -1937,7 +1941,6 @@ class DeleteAccountBottomSheet extends StatefulWidget {
 }
 
 class _DeleteAccountBottomSheetState extends State<DeleteAccountBottomSheet> {
-  final _formKey = GlobalKey<FormState>();
   final _passwordController = TextEditingController();
   final _confirmTextController = TextEditingController();
   bool _obscurePassword = true;
@@ -2047,156 +2050,173 @@ class _DeleteAccountBottomSheetState extends State<DeleteAccountBottomSheet> {
             // Form
             Padding(
               padding: const EdgeInsets.all(24),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    // Password Field
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade50,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Colors.grey.shade200),
-                      ),
-                      child: TextFormField(
-                        controller: _passwordController,
-                        obscureText: _obscurePassword,
-                        decoration: InputDecoration(
-                          hintText: 'Enter your password to confirm',
-                          hintStyle: TextStyle(color: Colors.grey.shade400),
-                          border: InputBorder.none,
-                          contentPadding: const EdgeInsets.all(20),
-                          prefixIcon: Icon(
-                            Icons.lock_outline,
-                            color: Colors.grey.shade600,
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscurePassword
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              color: Colors.grey.shade600,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _obscurePassword = !_obscurePassword;
-                              });
-                            },
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
-                          }
-                          return null;
-                        },
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    // Confirm Text Field
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade50,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Colors.grey.shade200),
-                      ),
-                      child: TextFormField(
-                        controller: _confirmTextController,
-                        decoration: InputDecoration(
-                          hintText: 'Type "DELETE" to confirm',
-                          hintStyle: TextStyle(color: Colors.grey.shade400),
-                          border: InputBorder.none,
-                          contentPadding: const EdgeInsets.all(20),
-                          prefixIcon: Icon(
-                            Icons.check_circle_outline,
-                            color: Colors.grey.shade600,
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value != 'DELETE') {
-                            return 'Please type "DELETE" to confirm';
-                          }
-                          return null;
-                        },
-                        onChanged: (value) {
-                          setState(() {
-                            _isConfirmed = value == 'DELETE';
-                          });
-                        },
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 24),
-
-                    // Action buttons
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            height: 56,
+              child: Column(
+                children: [
+                  // Password Field
+                  widget.fromProvider
+                      ? const SizedBox.shrink()
+                      : Column(
+                        children: [
+                          Container(
                             decoration: BoxDecoration(
-                              color: Colors.grey.shade100,
+                              color: Colors.grey.shade50,
                               borderRadius: BorderRadius.circular(16),
+                              border: Border.all(color: Colors.grey.shade200),
                             ),
-                            child: TextButton(
-                              onPressed: () => Get.back(),
-                              child: Text(
-                                'Cancel',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.grey.shade700,
+                            child: TextFormField(
+                              controller: _passwordController,
+                              obscureText: _obscurePassword,
+                              decoration: InputDecoration(
+                                hintText: 'Enter your password to confirm',
+                                hintStyle: TextStyle(
+                                  color: Colors.grey.shade400,
+                                ),
+                                border: InputBorder.none,
+                                contentPadding: const EdgeInsets.all(20),
+                                prefixIcon: Icon(
+                                  Icons.lock_outline,
+                                  color: Colors.grey.shade600,
+                                ),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _obscurePassword
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: Colors.grey.shade600,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _obscurePassword = !_obscurePassword;
+                                    });
+                                  },
                                 ),
                               ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your password';
+                                }
+                                return null;
+                              },
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+
+                          const SizedBox(height: 16),
+                        ],
+                      ),
+
+                  // Confirm Text Field
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade50,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: Colors.grey.shade200),
+                    ),
+                    child: TextFormField(
+                      controller: _confirmTextController,
+                      decoration: InputDecoration(
+                        hintText: 'Type "DELETE" to confirm',
+                        hintStyle: TextStyle(color: Colors.grey.shade400),
+                        border: InputBorder.none,
+                        contentPadding: const EdgeInsets.all(20),
+                        prefixIcon: Icon(
+                          Icons.check_circle_outline,
+                          color: Colors.grey.shade600,
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value != 'DELETE') {
+                          return 'Please type "DELETE" to confirm';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _isConfirmed = value == 'DELETE';
+                        });
+                      },
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // Action buttons
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 56,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: TextButton(
+                            onPressed: () => Get.back(),
+                            child: Text(
+                              'Cancel',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.grey.shade700,
+                              ),
                             ),
                           ),
                         ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Container(
-                            height: 56,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors:
-                                    _isConfirmed
-                                        ? [
-                                          const Color(0xFFEF4444),
-                                          const Color(0xFFDC2626),
-                                        ]
-                                        : [
-                                          Colors.grey.shade300,
-                                          Colors.grey.shade400,
-                                        ],
-                              ),
-                              borderRadius: BorderRadius.circular(16),
-                              boxShadow:
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Container(
+                          height: 56,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors:
                                   _isConfirmed
                                       ? [
-                                        BoxShadow(
-                                          color: const Color(
-                                            0xFFEF4444,
-                                          ).withOpacity(0.3),
-                                          blurRadius: 12,
-                                          offset: const Offset(0, 4),
-                                        ),
+                                        const Color(0xFFEF4444),
+                                        const Color(0xFFDC2626),
                                       ]
-                                      : null,
+                                      : [
+                                        Colors.grey.shade300,
+                                        Colors.grey.shade400,
+                                      ],
                             ),
-                            child: ElevatedButton(
-                              onPressed:
-                                  _isConfirmed
-                                      ? () async {
-                                        if (_formKey.currentState!.validate()) {
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow:
+                                _isConfirmed
+                                    ? [
+                                      BoxShadow(
+                                        color: const Color(
+                                          0xFFEF4444,
+                                        ).withOpacity(0.3),
+                                        blurRadius: 12,
+                                        offset: const Offset(0, 4),
+                                      ),
+                                    ]
+                                    : null,
+                          ),
+                          child: ElevatedButton(
+                            onPressed:
+                                _isConfirmed
+                                    ? () async {
+                                      if (widget.fromProvider) {
+                                        final result = await userRepository
+                                            .deleteAccount(null);
+
+                                        if (result) {
+                                          widget.onDeleteConfirmed();
+                                          Get.offAllNamed(Routes.LOGIN);
+                                        }
+                                      } else {
+                                        if (_passwordController.text
+                                            .trim()
+                                            .isNotEmpty) {
                                           final result = await userRepository
                                               .deleteAccount(
                                                 _passwordController.text.trim(),
@@ -2206,36 +2226,43 @@ class _DeleteAccountBottomSheetState extends State<DeleteAccountBottomSheet> {
                                             widget.onDeleteConfirmed();
                                             Get.offAllNamed(Routes.LOGIN);
                                           }
+                                        } else {
+                                          Get.snackbar(
+                                            'Error',
+                                            'Please enter your password to confirm',
+                                            snackPosition: SnackPosition.TOP,
+                                            backgroundColor: Colors.red,
+                                            colorText: Colors.white,
+                                          );
                                         }
                                       }
-                                      : null,
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.transparent,
-                                shadowColor: Colors.transparent,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
+                                    }
+                                    : null,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              shadowColor: Colors.transparent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
                               ),
-                              child: Text(
-                                'Delete Account',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color:
-                                      _isConfirmed
-                                          ? Colors.white
-                                          : Colors.white,
-                                ),
+                            ),
+                            child: Text(
+                              'Delete Account',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color:
+                                    _isConfirmed ? Colors.white : Colors.white,
                               ),
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
+
             const SizedBox(height: 32),
           ],
         ),
